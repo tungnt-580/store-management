@@ -3,7 +3,7 @@
 var app = require('../app')
 var http = require('http')
 
-var port = process.env.PORT || '3000'
+var port = process.env.PORT || '3001'
 var server = http.createServer(app)
   .listen(port)
   .on('error', onError)

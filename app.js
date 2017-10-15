@@ -4,14 +4,17 @@ var helmet = require('helmet')
 var HttpError = require('http-errors')
 var apiErrorHandler = require('api-error-handler')
 
-var routes = require('./routes/index')
+var productsRoute = require('./routes/products')
 
 var app = express()
+
+require('./config/database')
+require('./models/product')
 
 app.use(helmet.hidePoweredBy())
 app.use(bodyParser.json())
 
-app.use('/', routes)
+app.use('/api/v1/products', productsRoute)
 
 app.use((req, res, next) => {
   next(new HttpError.NotFound())

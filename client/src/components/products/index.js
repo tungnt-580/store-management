@@ -31,7 +31,7 @@ class ProductsIndex extends Component {
         <div className="ui grid">
           <div className="four wide column">
             <h1 className="ui header">
-              <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/23041-200.png" className="image" />
+              <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/23041-200.png" className="image" alt=""/>
               Products
             </h1>
           </div>

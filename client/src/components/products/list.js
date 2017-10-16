@@ -5,10 +5,10 @@ const ProductsList = ({ products }) => (
     <div className="twelve wide column">
       <div className="ui items">
         {products.map((product, index) => ([
-          <div className="ui divider"></div>,
-          <div className="item">
+          <div key={`divider-${index}`} className="ui divider"></div>,
+          <div key={`item-${index}`} className="item">
             <div className="ui small image">
-              <img src="https://www.customink.com/mms/images/catalog/styles/4600/catalog_detail_image_large.jpg"/>
+              <img src="https://www.customink.com/mms/images/catalog/styles/4600/catalog_detail_image_large.jpg" alt=""/>
             </div>
 
             <div className="content">

@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, NavLink } from 'react-router-dom'
 
 import ProductsLayout from './products/layout'
+import Contact from './contact/index'
 import './layout.css'
 
 const links = [
@@ -9,7 +10,7 @@ const links = [
   { to: '/products', className: 'item', children: 'Products' },
   {
     to: '/', className: 'item logo',
-    children: <img src="http://wall--art.com/wp-content/uploads/2014/10/shopping-bag-icon-black-and.png" />
+    children: <img src="http://wall--art.com/wp-content/uploads/2014/10/shopping-bag-icon-black-and.png" alt=""/>
   },
   { to: '/about', className: 'item', children: 'About'},
   { to: '/contact', className: 'item', children: 'Contact'}
@@ -19,7 +20,7 @@ const routes = [
   { path: '', exact: true },
   { path: '/products', component: ProductsLayout },
   { path: '/about' },
-  { path: '/contact' }
+  { path: '/contact', component: Contact }
 ]
 
 const ShopLayout = ({ match }) => (

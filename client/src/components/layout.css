@@ -29,3 +29,15 @@
 .ui.input input.green:focus {
   border-color: #21ba45;
 }
+
+.ui.comments .comment.right .avatar {
+  float: right;
+}
+
+.ui.comments .comment.right .content {
+  margin-right: 3.5em;
+}
+
+.ui.comments .comment.right .metadata {
+  margin-right: 0.5em;
+}

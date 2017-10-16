@@ -12,7 +12,7 @@ const ProductsGrid = ({ products }) => (
             </div>
           </div>
           <div className="image">
-            <img src="https://www.customink.com/mms/images/catalog/styles/4600/catalog_detail_image_large.jpg" />
+            <img src="https://www.customink.com/mms/images/catalog/styles/4600/catalog_detail_image_large.jpg" alt=""/>
           </div>
           <div className="content">
             <div className="header" align="center">${product.price}</div>

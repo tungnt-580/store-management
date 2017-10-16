@@ -9,6 +9,18 @@ var server = http.createServer(app)
   .on('error', onError)
   .on('listening', onListening)
 
+var io = require('socket.io')(server)
+
+io.on('connection', (client) => {
+  client.on('notify', ({ message, to, from }) => {
+    client.broadcast.emit(to, {message: message, from: from})
+  })
+})
+
+var socketPort = 8000
+io.listen(socketPort)
+console.log('Socket is listening on port ', socketPort)
+
 function onError (error) {
   if (error.syscall !== 'listen') throw error
 

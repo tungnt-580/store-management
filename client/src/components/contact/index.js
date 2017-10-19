@@ -1,37 +1,26 @@
 import React, { Component } from 'react'
 import openSocket from 'socket.io-client'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
+import { fetchShopConversation, createShopConversation } from '../../actions'
 import Conversation from './conversation'
 
 const socket = openSocket('http://localhost:8000')
 
 class Contact extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      conversation: {
-        comments: []
-      }
-    }
-
-    this.getConversation = this.getConversation.bind(this)
-    this.createConversation = this.createConversation.bind(this)
-    this.updateConversation = this.updateConversation.bind(this)
-  }
-
   componentDidMount() {
-    this.getConversation()
+    this.props.fetchShopConversation('id')
 
     socket.on('Matt', ({ message, from }) => {
       if (message === 'new comment') {
-        this.getConversation();
+        this.props.fetchShopConversation('id');
       }
     })
   }
 
   render() {
-    const { conversation } = this.state
+    const conversation = this.props.shopConversation
 
     return (
       <div className="ui grid" style={{paddingTop: 30}}>
@@ -39,62 +28,18 @@ class Contact extends Component {
           <i className="comments icon"></i>
           Contact
         </h1>
-        <Conversation conversation={conversation} onSubmitComment={this.updateConversation}/>
+        <Conversation conversation={conversation} />
       </div>
     )
   }
-
-  getConversation() {
-    fetch('/api/v1/conversations/put-id-here')
-      .then(res => {
-        if (res.status === 404) {
-          this.createConversation()
-          throw new Error(res)
-        }
-        if (res.ok) return res.json()
-      }).then(data => {
-        this.setState({ conversation: data })
-      }).catch(err => {
-        console.log(err)
-      })
-
-  }
-
-  createConversation() {
-    const user = { name: 'Matt' }
-    fetch('/api/v1/conversations', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        members: ['admin', user.name],
-        comments: [{
-          message: `Hi, ${user.name}! How was your day?`,
-          author: 'admin'
-        }]
-      })
-    }).then(res => res.json())
-      .then(data => { this.setState({ conversation: data }) })
-  }
-
-  updateConversation(id, comments) {
-    fetch(`/api/v1/conversations/${id}`, {
-      method: 'put',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ comments })
-    }).then(res => {
-      if (res.ok) return res.json()
-      if (res.status === 422) throw res
-    }).then(data => {
-      this.setState({ conversation: data })
-      socket.emit('notify', {
-        message: 'new comment',
-        from: 'Matt',
-        to: 'admin'
-      })
-    }).catch(err => {
-        console.log(err)
-      })
-  }
 }
 
-export default Contact
+function mapStateToProps({ shopConversation }) {
+  return { shopConversation }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchShopConversation }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contact)

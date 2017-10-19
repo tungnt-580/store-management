@@ -12,7 +12,8 @@ router.use('/:id', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-  Product.find({}, (err, products) => {
+  const term = req.query.term || ''
+  Product.find({name: new RegExp(term, 'i')}, (err, products) => {
     if (err) return next(err)
     res.json(products)
   });

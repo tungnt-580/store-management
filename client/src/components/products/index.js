@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
+import { fetchShopProducts } from '../../actions'
 import ProductsGrid from './grid'
 import ProductsList from './list'
 
@@ -9,22 +12,20 @@ class ProductsIndex extends Component {
 
     this.state = {
       view: 'grid',
-      search: '',
-      products: []
+      search: ''
     }
-    this.data = { products: [] }
 
-    this.getProducts = this.getProducts.bind(this)
     this.changeViewType = this.changeViewType.bind(this)
     this.handleChangeSearchInput = this.handleChangeSearchInput.bind(this)
   }
 
   componentDidMount() {
-    this.getProducts()
+    this.props.fetchShopProducts('')
   }
 
   render() {
-    const { view, search, products } = this.state
+    const { view, search } = this.state
+    const products = this.props.shopProducts
 
     return (
       <div className="sixteen wide column">
@@ -63,26 +64,23 @@ class ProductsIndex extends Component {
     )
   }
 
-  getProducts() {
-    fetch('/api/v1/products')
-      .then(res => res.json())
-      .then(data => {
-        this.data.products = data
-        this.setState({products: this.data.products})
-      })
-  }
-
   changeViewType(type) {
     this.setState({view: type})
   }
 
   handleChangeSearchInput(e) {
     const searchInput = e.target.value
-    this.setState({
-      search: searchInput,
-      products: this.data.products.filter(product => product.name.includes(searchInput))
-    })
+    this.setState({ search: searchInput })
+    this.props.fetchShopProducts(searchInput)
   }
 }
 
-export default ProductsIndex
+function mapStateToProps({ shopProducts }) {
+  return { shopProducts }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchShopProducts }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsIndex)

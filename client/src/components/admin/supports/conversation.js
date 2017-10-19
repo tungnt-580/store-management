@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { updateAdminConversation } from '../../../actions'
 import Comment from './comment'
 
 class Conversation extends Component {
@@ -25,9 +29,11 @@ class Conversation extends Component {
           ))}
         </div>
         <div className="ui form">
-          <textarea placeholder="Type something and hit enter to talk with us" value={comment}
-            onChange={this.handleChangeComment} onKeyPress={this.handleKeyPress}>
-          </textarea>
+          <div className="field">
+            <textarea placeholder="Answer him/her" value={comment}
+              onChange={this.handleChangeComment} onKeyPress={this.handleKeyPress}>
+            </textarea>
+          </div>
         </div>
       </div>
     )
@@ -39,10 +45,11 @@ class Conversation extends Component {
 
   handleKeyPress(e) {
     if (e.key === 'Enter') {
+      e.preventDefault()
       const { conversation } = this.props
       const { comment } = this.state
 
-      this.props.onSubmitComment(conversation._id, conversation.comments.concat([{
+      this.props.updateAdminConversation(conversation._id, conversation.comments.concat([{
         message: comment,
         author: 'admin'
       }]))
@@ -51,4 +58,8 @@ class Conversation extends Component {
   }
 }
 
-export default Conversation
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ updateAdminConversation }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(Conversation)

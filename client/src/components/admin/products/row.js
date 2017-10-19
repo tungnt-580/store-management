@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { deleteAdminProduct } from '../../../actions'
 
 class ProductRow extends Component {
   constructor() {
@@ -40,8 +44,14 @@ class ProductRow extends Component {
   }
 
   handleClickDelete() {
-    this.props.onClickDelete(this.props.data._id);
+    const { _id } = this.props.data
+
+    this.props.deleteAdminProduct(_id)
   }
 }
 
-export default ProductRow
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ deleteAdminProduct }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(ProductRow)

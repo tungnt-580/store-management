@@ -10,3 +10,6 @@ coverage
 
 # npm
 npm-debug.log
+
+# environment config files
+.env

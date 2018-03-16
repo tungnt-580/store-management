@@ -16,6 +16,10 @@ require('./models/conversation')
 app.use(helmet.hidePoweredBy())
 app.use(bodyParser.json())
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
+
 app.use('/api/v1/products', productsRoute)
 app.use('/api/v1/conversations', conversationsRoute)
 
